@@ -1,4 +1,4 @@
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, SafeAreaView } from "react-native";
 import Header from "./components/Header";
 import GameScreen from "./screens/GameScreen";
 import StartGameScreen from "./screens/StartGameScreen";
@@ -9,7 +9,7 @@ import AppLoading from "expo-app-loading";
 
 const fetchFonts = (): Promise<any> => {
   return Font.loadAsync({
-    "open-sans": require("./assets/fonts/OpenSans-Regular.ttf")
+    "open-sans": require("./assets/fonts/OpenSans-Regular.ttf"),
   });
 };
 
@@ -19,7 +19,11 @@ export default function App() {
   const [isLoading, setisLoading] = useState(false);
 
   if (!isLoading) {
-    <AppLoading startAsync={fetchFonts} onFinish={() => setisLoading(true)} onError={console.warn}/>;
+    <AppLoading
+      startAsync={fetchFonts}
+      onFinish={() => setisLoading(true)}
+      onError={console.warn}
+    />;
   }
   const startGameHandler = (selectedNumber: number) => {
     setuserNumber(selectedNumber);
@@ -33,7 +37,7 @@ export default function App() {
   };
 
   return (
-    <View style={styles.screen}>
+    <SafeAreaView style={styles.screen}>
       <Header title="Guess A Number" />
       {userNumber === null && numberOfRounds <= 0 && (
         <StartGameScreen startGameHandler={startGameHandler} />
@@ -48,7 +52,7 @@ export default function App() {
           startNewGame={startNewGame}
         />
       )}
-    </View>
+    </SafeAreaView>
   );
 }
 

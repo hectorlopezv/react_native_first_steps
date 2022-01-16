@@ -5,18 +5,26 @@ import {
   Touchable,
   TouchableOpacity,
   StyleSheet,
+  Platform,
+  TouchableNativeFeedback,
 } from "react-native";
 import Colors from "../constants/color";
 interface Iprops {
   onPress: any;
 }
 const MainButton: FC<Iprops> = ({ children, onPress }) => {
+  let Component: any = TouchableOpacity;
+  if (Platform.OS === "android" && Platform.Version >= 21) {
+    Component = TouchableNativeFeedback;
+  }
+
   return (
-    <TouchableOpacity onPress={onPress} activeOpacity={0.8}>
+    <Component onPress={onPress} activeOpacity={0.8}>
+      <Text>IOS</Text>
       <View style={styles.button}>
         <Text style={styles.buttonText}>{children}</Text>
       </View>
-    </TouchableOpacity>
+    </Component>
   );
 };
 
