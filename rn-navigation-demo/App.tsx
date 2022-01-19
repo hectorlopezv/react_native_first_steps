@@ -1,10 +1,11 @@
 import { StatusBar } from "expo-status-bar";
-import { useState } from "react";
+import { useState, useLayoutEffect } from "react";
 import { StyleSheet, Text, View, Button, Image } from "react-native";
 import AppLoading from "expo-app-loading";
 import { useFonts } from "expo-font";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 // export default function App() {
 //   let [fontsLoaded] = useFonts({
 //     "Opens-Sans": require("./assets/fonts/OpenSans-Regular.ttf"),
@@ -24,8 +25,36 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 //   }
 // }
 
+const Stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
+function TabsScreen() {
+  return (
+    <Tab.Navigator>
+      <Tab.Screen name="Feed" component={Feed} />
+      <Tab.Screen name="Messages" component={Messages} />
+    </Tab.Navigator>
+  );
+}
+function Messages({ navigation, route }: { navigation: any; route: any }) {
+  return <Text>Messages </Text>;
+}
+function Feed({ navigation }: { navigation: any }) {
+  return (
+    <View>
+      <Text>Feed</Text>
+      <Button title="GOBACK" onPress={() => navigation.navigate("Details")} />
+    </View>
+  );
+}
 function HomeScreen({ navigation }: { navigation: any }) {
   const [counter, setcounter] = useState(0);
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <Button onPress={() => setcounter((c) => c + 1)} title="Update count" />
+      ),
+    });
+  }, [navigation]);
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
       <Text>Home Screen{counter}</Text>
@@ -53,6 +82,11 @@ function HomeScreen({ navigation }: { navigation: any }) {
 function Details({ navigation, route }: { navigation: any; route: any }) {
   const { hello = null } = route.params;
   const [counter, setcounter] = useState(0);
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      title: "PA Atras",
+    });
+  }, [navigation]);
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
       <Text>Details {hello}</Text>
@@ -75,6 +109,17 @@ function Details({ navigation, route }: { navigation: any; route: any }) {
         onPress={() =>
           navigation.setParams({
             hello: "someText",
+          })
+        }
+      />
+      <Button
+        title="Go to Tabs Messages"
+        onPress={() =>
+          navigation.navigate("Home", {
+            screen: "Messages",
+            params: {
+              user: "HelloTest",
+            },
           })
         }
       />
@@ -104,33 +149,73 @@ function LogoTitle() {
   );
 }
 
-const Stack = createNativeStackNavigator();
-
 function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Home"
+        // initialRouteName="Home"
         screenOptions={{
           headerStyle: {
             backgroundColor: "#f4511e",
           },
+          headerBackTitle: "Pa Atras",
           headerTintColor: "#fff",
           headerTitleStyle: {
             fontWeight: "bold",
           },
         }}
       >
-        <Stack.Screen
+        <Stack.Group
+          screenOptions={({
+            route,
+            navigation,
+          }: {
+            route: any;
+            navigation: any;
+          }) => ({
+            title: route.params?.title,
+          })}
+        >
+          <Stack.Screen name="Messages" component={Messages} />
+          <Stack.Screen name="Feed" component={Feed} />
+        </Stack.Group>
+        {/* <Stack.Screen
           name="Home"
           component={HomeScreen}
-          options={{ headerTitle: (props) => <LogoTitle {...props} /> }}
+          options={{
+            headerTitle: (props) => <LogoTitle {...props} />,
+            headerRight: () => (
+              <Button
+                onPress={() => alert("This is a button!")}
+                title="Info"
+                color="blue"
+              />
+            ),
+            headerShown: true,
+          }}
         />
         <Stack.Screen
           name="Details"
           component={Details}
           initialParams={{ hello: "inicio" }}
-          options={{ title: "Details" }}
+          options={({
+            route,
+            navigation,
+          }: {
+            route: any;
+            navigation: any;
+          }) => ({
+            title: "Details",
+            headerBackTitle: "pa Atras",
+            headerBackTitleVisible: true,
+            headerLeft: (props: any) => (
+              <Button
+                onPress={() => props.canGoBack && navigation.goBack()}
+                title="Left Button"
+                color="blue"
+              />
+            ),
+          })}
         />
         <Stack.Screen
           name="Profile"
@@ -138,7 +223,7 @@ function App() {
           options={({ route }: { route: any }) => ({
             title: route.params.name,
           })}
-        />
+        /> */}
       </Stack.Navigator>
     </NavigationContainer>
   );
