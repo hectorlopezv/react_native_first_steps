@@ -1,10 +1,26 @@
 import { FC } from "react";
-import { View, StyleSheet, Text } from "react-native";
-interface IMealsDetailScreen {}
-const MealsDetailScreen: FC<IMealsDetailScreen> = () => {
+import { View, StyleSheet, Text, Button } from "react-native";
+
+import { RouteProp } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { MEALS } from "../data/dummy-data";
+
+type RootStackParamList = {};
+interface IMealsDetailScreen {
+  navigation: NativeStackNavigationProp<RootStackParamList>;
+  route: RouteProp<{ params: { mealId: string } }, "params">;
+}
+const MealsDetailScreen: FC<IMealsDetailScreen> = ({ navigation, route }) => {
+  const selectedMeal = MEALS.find(
+    (meal) => meal.id === route.params?.mealId ?? ""
+  );
   return (
     <View style={styles.screen}>
-      <Text></Text>
+      <Text>{selectedMeal?.title}</Text>
+      <Button
+        title="GO Back to Categories"
+        onPress={() => navigation.popToTop()}
+      />
     </View>
   );
 };

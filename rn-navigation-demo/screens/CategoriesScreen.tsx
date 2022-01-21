@@ -1,19 +1,29 @@
 import { FC } from "react";
-import { View, StyleSheet, Text } from "react-native";
-interface ICategoriesScreen {}
-const CategoriesScreen: FC<ICategoriesScreen> = () => {
+import { StyleSheet, FlatList } from "react-native";
+import { NavigationProp, ParamListBase } from "@react-navigation/native";
+import { CATEGORIES } from "../data/dummy-data";
+import CategoryGridTtile from "../components/CategoryGridTile";
+interface ICategoriesScreen {
+  navigation: NavigationProp<ParamListBase>;
+}
+const CategoriesScreen: FC<ICategoriesScreen> = ({ navigation }) => {
+  const renderGridItem = (itemData: any) => {
+    return (
+      <CategoryGridTtile
+        title={itemData.item.title}
+        color={itemData.item.color}
+        onSelect={() => {
+          navigation.navigate("CategoriesMeals", {
+            categoryId: itemData.item.id,
+          });
+        }}
+      />
+    );
+  };
   return (
-    <View style={styles.screen}>
-      <Text></Text>
-    </View>
+    <FlatList numColumns={2} data={CATEGORIES} renderItem={renderGridItem} />
   );
 };
 export default CategoriesScreen;
 
-const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-});
+const styles = StyleSheet.create({});
