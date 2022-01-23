@@ -1,5 +1,4 @@
 import React, { FC } from "react";
-import { StyleSheet } from "react-native";
 import MealList from "../components/MealList";
 import { MEALS } from "../data/dummy-data";
 import { RouteProp } from "@react-navigation/native";

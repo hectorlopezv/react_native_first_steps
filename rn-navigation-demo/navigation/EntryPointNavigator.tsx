@@ -1,16 +1,23 @@
 import React, { FC } from "react";
-import { StyleSheet, Platform } from "react-native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import Colors from "../constants/Colors";
+
+import { createDrawerNavigator } from "@react-navigation/drawer";
+import MealsNavigator from "./MealsNavigator";
+import FiltersScreen from "../screens/FiltersScreen";
 import FilterNavigator from "./FiltersNavigator";
 interface IEntryPointNavigator {}
-const Stack = createNativeStackNavigator();
+
+const Drawer = createDrawerNavigator();
 
 const EntryPointNavigator: FC<IEntryPointNavigator> = () => {
   return (
-    <Stack.Navigator initialRouteName="Categories">
-      <Stack.Screen name="Filters" component={FilterNavigator} />
-    </Stack.Navigator>
+    <Drawer.Navigator initialRouteName="MealsFavs">
+      <Drawer.Screen name="MealsFavs" component={MealsNavigator} />
+      <Drawer.Screen
+        name="FiltersNavigator"
+        component={FilterNavigator}
+        options={{}}
+      />
+    </Drawer.Navigator>
   );
 };
 export default EntryPointNavigator;
