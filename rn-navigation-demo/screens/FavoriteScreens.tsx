@@ -1,19 +1,26 @@
-import { FC } from "react";
-import { View, StyleSheet, Text } from "react-native";
-interface IFavoriteScreen {}
-const FavoriteScreen: FC<IFavoriteScreen> = () => {
-  return (
-    <View style={styles.screen}>
-      <Text></Text>
-    </View>
-  );
+import React, { FC } from "react";
+import { StyleSheet } from "react-native";
+import MealList from "../components/MealList";
+import { MEALS } from "../data/dummy-data";
+import { RouteProp } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+
+type RootStackParamList = {
+  MealDetailScreen: { mealId: string };
+};
+interface IFavoriteScreen {
+  navigation: NativeStackNavigationProp<RootStackParamList>;
+  route: RouteProp<{ params: { categoryId: string } }, "params">;
+}
+const FavoriteScreen: FC<IFavoriteScreen> = ({ route, navigation }) => {
+  const favMeal = MEALS.filter((meal) => meal.id === "m1" || meal.id === "m2");
+
+  const onselectMeal = (itemData: any) => {
+    console.log("itemData", itemData);
+    navigation.navigate("MealDetailScreen", {
+      mealId: itemData.item.id,
+    });
+  };
+  return <MealList listData={favMeal} onSelectedMeal={onselectMeal} />;
 };
 export default FavoriteScreen;
-
-const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-});

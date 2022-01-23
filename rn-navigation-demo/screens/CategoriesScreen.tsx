@@ -3,6 +3,7 @@ import { StyleSheet, FlatList } from "react-native";
 import { NavigationProp, ParamListBase } from "@react-navigation/native";
 import { CATEGORIES } from "../data/dummy-data";
 import CategoryGridTtile from "../components/CategoryGridTile";
+import React from "react";
 interface ICategoriesScreen {
   navigation: NavigationProp<ParamListBase>;
 }

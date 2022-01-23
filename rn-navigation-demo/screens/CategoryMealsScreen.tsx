@@ -1,9 +1,8 @@
-import { FC } from "react";
-import { View, StyleSheet, FlatList, Text } from "react-native";
+import React, { FC } from "react";
 import { RouteProp } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { MEALS } from "../data/dummy-data";
-import MealIteam from "../components/MealItem";
+import MealList from "../components/MealList";
 
 type RootStackParamList = {
   MealDetailScreen: { mealId: string };
@@ -16,47 +15,15 @@ const CategoriesMealScreen: FC<ICategoriesMealScreen> = ({
   navigation,
   route,
 }) => {
-  const renderMealItem = (itemData: any) => {
-    return (
-      <MealIteam
-        onSelectMeal={() =>
-          navigation.navigate("MealDetailScreen", {
-            mealId: itemData.item.id,
-          })
-        }
-        title={itemData.item.title}
-        duration={itemData.item.duration}
-        complexity={itemData.item.complexity}
-        afford={itemData.item.affordability}
-        image={itemData.item.imageUrl}
-      />
-    );
-  };
   const displayedMeals = MEALS.filter((meal) => {
     const isInvalid = meal.categoryIds.indexOf(route.params?.categoryId ?? "");
     return isInvalid >= 0;
   });
-  const renderMeal = (itemData: any) => {
-    return renderMealItem(itemData);
-  };
-  return (
-    <View style={styles.screen}>
-      <FlatList
-        data={displayedMeals}
-        renderItem={renderMeal}
-        style={{
-          width: "100%",
-        }}
-      />
-    </View>
-  );
+
+  const onselectMeal = (itemData: any) =>
+    navigation.navigate("MealDetailScreen", {
+      mealId: itemData.item.id,
+    });
+  return <MealList listData={displayedMeals} onSelectedMeal={onselectMeal} />;
 };
 export default CategoriesMealScreen;
-
-const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-});

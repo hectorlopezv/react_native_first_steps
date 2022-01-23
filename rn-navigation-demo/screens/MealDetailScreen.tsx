@@ -4,6 +4,7 @@ import { View, StyleSheet, Text, Button } from "react-native";
 import { RouteProp } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { MEALS } from "../data/dummy-data";
+import React from "react";
 
 type RootStackParamList = {};
 interface IMealsDetailScreen {

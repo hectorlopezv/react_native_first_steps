@@ -1,14 +1,9 @@
 import "react-native-gesture-handler";
-import { StyleSheet, Platform } from "react-native";
 import AppLoading from "expo-app-loading";
 import { useFonts } from "expo-font";
 import { NavigationContainer } from "@react-navigation/native";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { createDrawerNavigator } from "@react-navigation/drawer";
-import FavoriteScreen from "./screens/FavoriteScreens";
-import MealsNavigator from "./navigation/MealsNavigator";
-
-const Tab = createBottomTabNavigator();
+import React from "react";
+import EntryPointNavigator from "./navigation/EntryPointNavigator";
 
 function App() {
   let [fontsLoaded] = useFonts({
@@ -20,21 +15,9 @@ function App() {
   } else {
     return (
       <NavigationContainer>
-        <Tab.Navigator>
-          <Tab.Screen name="Meals" component={MealsNavigator} />
-          <Tab.Screen name="Favorites" component={FavoriteScreen} />
-        </Tab.Navigator>
+        <EntryPointNavigator />
       </NavigationContainer>
     );
   }
 }
 export default App;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
