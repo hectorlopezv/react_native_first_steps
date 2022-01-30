@@ -4,7 +4,8 @@ import { useFonts } from "expo-font";
 import { NavigationContainer } from "@react-navigation/native";
 import React from "react";
 import EntryPointNavigator from "./navigation/EntryPointNavigator";
-
+import store from "./store/store";
+import { Provider } from "react-redux";
 function App() {
   let [fontsLoaded] = useFonts({
     "open-sans": require("./assets/fonts/OpenSans-Regular.ttf"),
@@ -14,9 +15,11 @@ function App() {
     return <AppLoading />;
   } else {
     return (
-      <NavigationContainer>
-        <EntryPointNavigator />
-      </NavigationContainer>
+      <Provider store={store}>
+        <NavigationContainer>
+          <EntryPointNavigator />
+        </NavigationContainer>
+      </Provider>
     );
   }
 }
