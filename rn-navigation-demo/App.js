@@ -6,6 +6,12 @@ import React from "react";
 import EntryPointNavigator from "./navigation/EntryPointNavigator";
 import store from "./store/store";
 import { Provider } from "react-redux";
+import { connectToDevTools } from "react-devtools-core";if (__DEV__) {
+  connectToDevTools({
+    host: "localhost",
+    port: 8097,
+  });
+}
 function App() {
   let [fontsLoaded] = useFonts({
     "open-sans": require("./assets/fonts/OpenSans-Regular.ttf"),
