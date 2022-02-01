@@ -1,20 +1,18 @@
+import 'react-native-gesture-handler';
 import {AppRegistry} from 'react-native';
-import {Provider} from 'react-redux';
 import {name as appName} from './app.json';
-import {apiSlice} from './store/apislice';
 import store from './store/store';
-import {NavigationContainer} from '@react-navigation/native';
+import {Provider} from 'react-redux';
 import React from 'react';
-import EntryPointNavigator from './navigation/EntryPointNavigator';
-export const users = store.dispatch(apiSlice.endpoints.getUsers.initiate());
+import { NavigationContainer } from '@react-navigation/native';
+import EntryNav from './navigation/EntryNav';
 const Entry = () => {
   return (
     <Provider store={store}>
       <NavigationContainer>
-        <EntryPointNavigator />
+        <EntryNav />
       </NavigationContainer>
     </Provider>
   );
 };
-
 AppRegistry.registerComponent(appName, () => Entry);
