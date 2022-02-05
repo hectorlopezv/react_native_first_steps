@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  Button,
   Image,
   StyleSheet,
   View,
@@ -10,7 +9,7 @@ import {
 
 const ProductItem = props => {
   return (
-    <TouchableOpacity onPress={props.onViewDetail}>
+    <TouchableOpacity onPress={props.onSelect}>
       <View style={styles.product}>
         <View style={styles.imageContainer}>
           <Image source={{uri: props.image}} style={styles.image} />
@@ -18,13 +17,10 @@ const ProductItem = props => {
 
         <View style={styles.details}>
           <Text style={styles.title}>{props.title}</Text>
-          <Text style={styles.price}>{props.price.toFixed(2)}</Text>
+          <Text style={styles.price}>{props?.price.toFixed(2)}</Text>
         </View>
 
-        <View style={styles.actions}>
-          <Button title="View Details" onPress={props.onViewDetail} />
-          <Button title="To Cart" onPress={props.onAddToCart} />
-        </View>
+        <View style={styles.actions}>{props.children}</View>
       </View>
     </TouchableOpacity>
   );

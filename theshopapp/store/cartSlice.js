@@ -10,6 +10,13 @@ const cartSlice = createSlice({
   name: 'cart',
   initialState: initialState,
   reducers: {
+    deleteproductcart(state, action) {
+      if (state.item[action.payload]) {
+        const itemTotal = state.items[action.payload].sum;
+        state.totalAmount -= itemTotal;
+        delete state.item[action.payload];
+      }
+    },
     addordercart(state, action) {
       return initialState;
     },
@@ -43,22 +50,6 @@ const cartSlice = createSlice({
         delete state.items[action.payload];
       }
     },
-    // incremenet: {
-    //   reducer(state, action) {
-    //     state.value += action.payload.value;
-    //   },
-    //   prepare(value = 1) {
-    //     return {
-    //       payload: {
-    //         id: nanoid(),
-    //         value: value,
-    //       },
-    //     };
-    //   },
-    // },
-    // decrement(state, action) {
-    //   state.value -= action.payload ?? 1;
-    // },
   },
 });
 export const {addtocart, removefromcart} = cartSlice.actions;

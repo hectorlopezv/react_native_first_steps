@@ -11,7 +11,9 @@ const CartItem = props => {
       </Text>
       <View style={styles.itemData}>
         <Text style={styles.amount}>{props.amount.toFixed(2)}</Text>
-        <Button title="delete" color="red" onPress={props.onRemove} />
+        {!!props?.delete && (
+          <Button title="delete" color="red" onPress={props.onRemove} />
+        )}
       </View>
     </View>
   );
