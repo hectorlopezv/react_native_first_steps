@@ -1,12 +1,15 @@
 const createDebugger = require('redux-flipper').default;
 import {configureStore} from '@reduxjs/toolkit';
-
-import counterSlice from './counterSlice';
+import cartSlice from './cartSlice';
+import ordersSlice from './ordersSlice';
+import productsSlice from './productsSlice';
 
 const store = configureStore({
   reducer: {
     // Define a top-level state field named `todos`, handled by `todosReducer`
-    counter: counterSlice,
+    products: productsSlice,
+    cart: cartSlice,
+    orders: ordersSlice,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware().concat(createDebugger()),

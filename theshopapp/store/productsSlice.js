@@ -1,9 +1,11 @@
 import {createSlice, nanoid} from '@reduxjs/toolkit';
+import PRODUCTS from '../data/dummyData';
 
-const counterSlice = createSlice({
-  name: 'counter',
+const productsSlice = createSlice({
+  name: 'products',
   initialState: {
-    value: 0,
+    availableProducts: PRODUCTS,
+    userProducts: PRODUCTS.filter(prod => prod.ownerId === 'u1'),
   },
   reducers: {
     incremenet: {
@@ -24,8 +26,7 @@ const counterSlice = createSlice({
     },
   },
 });
-export const actions = counterSlice.actions;
+export const {incremenet, decrement} = productsSlice.actions;
+export const selectProducts = state => state.products.availableProducts;
 
-export const selectCount = state => state.counter.value;
-
-export default counterSlice.reducer;
+export default productsSlice.reducer;
