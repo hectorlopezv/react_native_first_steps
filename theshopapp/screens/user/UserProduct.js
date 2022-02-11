@@ -2,7 +2,7 @@ import React from 'react';
 import {FlatList, Button, Alert} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import ProductItem from '../../components/shop/ProductItem';
-import {deleteproduct} from '../../store/productsSlice';
+import {deleteproduct, deleteProductthunk} from '../../store/productsSlice';
 
 const UserProductScreen = props => {
   const userProducts = useSelector(state => state.products.userProducts);
@@ -20,6 +20,7 @@ const UserProductScreen = props => {
         style: 'destructive',
         onPress: () => {
           dispatch(deleteproduct(id));
+          dispatch(deleteProductthunk(id));
         },
       },
     ]);

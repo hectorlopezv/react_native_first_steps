@@ -1,17 +1,26 @@
-import React from 'react';
-import {View, Text, FlatList, StyleSheet, Button} from 'react-native';
+import React, {useEffect} from 'react';
+import {
+  View,
+  Text,
+  FlatList,
+  StyleSheet,
+  Button,
+  ActivityIndicator,
+} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import Colors from '../../constants/Colors';
 import CarItem from '../../components/shop/CartItem';
 import {removefromcart} from '../../store/cartSlice';
-import {addorder} from '../../store/ordersSlice';
+import {addorder, addOrderThunk, setOrderThunk} from '../../store/ordersSlice';
+import {deleteProductthunk} from '../../store/productsSlice';
 
 const CartScreen = props => {
   const dispatch = useDispatch();
   const cartTotalAmount = useSelector(state => state.cart.totalAmount);
+  const ordersLoading = useSelector(state => state.orders.statusorders);
   const cartItems = useSelector(state => {
     const trasformedCartItems = [];
-    for (let key in state.cart.items) {
+    for (let key in state?.cart?.items) {
       trasformedCartItems.push({
         productId: key,
         title: state.cart.items[key].productTitle,
@@ -23,6 +32,7 @@ const CartScreen = props => {
     return trasformedCartItems;
   });
 
+
   return (
     <View style={styles.screen}>
       <View style={styles.summary}>
@@ -30,15 +40,29 @@ const CartScreen = props => {
           Total:{' '}
           <Text style={styles.amount}>${cartTotalAmount.toFixed(2)}</Text>
         </Text>
-        <Button
-          title="Order Now"
-          onPress={() => {
-            dispatch(
-              addorder({cartItems: cartItems, totalAmount: cartTotalAmount}),
-            );
-          }}
-          disabled={cartItems.length === 0}
-        />
+
+        {ordersLoading === 'pending' ? (
+          <View
+            style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+            <ActivityIndicator size={'large'} color={'red'} />
+          </View>
+        ) : (
+          <Button
+            title="Order Now"
+            onPress={() => {
+              dispatch(
+                addorder({cartItems: cartItems, totalAmount: cartTotalAmount}),
+              );
+              dispatch(
+                addOrderThunk({
+                  cartItems: cartItems,
+                  totalAmount: cartTotalAmount,
+                }),
+              );
+            }}
+            disabled={cartItems.length === 0}
+          />
+        )}
       </View>
       <FlatList
         data={cartItems}
@@ -49,6 +73,7 @@ const CartScreen = props => {
             amount={itemData.item.sum}
             onRemove={() => {
               dispatch(removefromcart(itemData.item.productId));
+              dispatch(deleteProductthunk(itemData.item.productId));
             }}
           />
         )}

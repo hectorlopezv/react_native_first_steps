@@ -9,15 +9,15 @@ import {
 
 const ProductItem = props => {
   return (
-    <TouchableOpacity onPress={props.onSelect}>
+    <TouchableOpacity onPress={props?.onSelect}>
       <View style={styles.product}>
         <View style={styles.imageContainer}>
-          <Image source={{uri: props.image}} style={styles.image} />
+          <Image source={{uri: props?.image}} style={styles.image} />
         </View>
 
         <View style={styles.details}>
-          <Text style={styles.title}>{props.title}</Text>
-          <Text style={styles.price}>{props?.price.toFixed(2)}</Text>
+          <Text style={styles.title}>{props?.title}</Text>
+          <Text style={styles.price}>{props?.price?.toFixed(2)}</Text>
         </View>
 
         <View style={styles.actions}>{props.children}</View>

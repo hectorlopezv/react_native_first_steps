@@ -1,10 +1,10 @@
 import {createSlice, nanoid} from '@reduxjs/toolkit';
-import CartItem from '../components/shop/CartItem';
+
 import CarItem from '../models/cartItem';
 
 const initialState = {
   items: {},
-  totalAmount: 0,
+  totalAmount: 0.0,
 };
 const cartSlice = createSlice({
   name: 'cart',

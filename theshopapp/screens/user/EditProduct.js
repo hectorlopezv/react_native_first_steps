@@ -1,4 +1,3 @@
-import {is} from 'immer/dist/internal';
 import React, {useEffect, useCallback, useReducer} from 'react';
 import {
   View,
@@ -10,7 +9,11 @@ import {
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import Input from '../../components/UI/Input';
-import {createproduct, updateproduct} from '../../store/productsSlice';
+import {
+  createProductthunk,
+  updateproduct,
+  updateProductthunk,
+} from '../../store/productsSlice';
 const FORM_UPDATE = 'UPDATE';
 
 const formReducer = (state, action) => {
@@ -27,7 +30,7 @@ const formReducer = (state, action) => {
       ...state,
       inputValues: updatedValues,
       inputValidities: updatedValidities,
-      formIsValid:  action.isValid,
+      formIsValid: action.isValid,
     };
   }
 };
@@ -36,7 +39,7 @@ const EditProductScreen = props => {
   const dispatch = useDispatch();
   const prodId = props?.route?.params?.productId;
   const editedProduct = useSelector(state =>
-    state.products.userProducts.find(prod => prod.id === prodId),
+    state?.products?.userProducts?.find(prod => prod.id === prodId),
   );
 
   const [formState, dispatchAction] = useReducer(formReducer, {
@@ -56,8 +59,7 @@ const EditProductScreen = props => {
   });
 
   const submitHanlder = useCallback(() => {
-
-
+    console.log('formState', formState);
     if (editedProduct) {
       dispatch(
         updateproduct({
@@ -67,30 +69,32 @@ const EditProductScreen = props => {
           imageUrl: formState.inputValues.imageUrl,
         }),
       );
+      dispatch(
+        updateProductthunk({
+          pid: prodId,
+          title: formState.inputValues.title,
+          description: formState.inputValues.description,
+          imageUrl: formState.inputValues.imageUrl,
+        }),
+      );
     } else {
       dispatch(
-        createproduct({
-          price: + formState.inputValues.price,
+        createProductthunk({
+          price: +formState.inputValues.price,
           title: formState.inputValues.title,
           description: formState.inputValues.description,
           imageUrl: formState.inputValues.imageUrl,
         }),
       );
     }
-  }, [prodId, dispatch]);
+  }, [prodId, dispatch, formState]);
 
   useEffect(() => {
     props.navigation.setParams({submit: submitHanlder});
-  }, [submitHanlder]);
+  }, [submitHanlder, prodId, dispatch, formState]);
 
   const inputChangeHandler = useCallback(
     (inputIdentifier, value, isValid) => {
-      console.log(
-        'inputIdentifier, value, isValid',
-        inputIdentifier,
-        value,
-        isValid,
-      );
       dispatchAction({
         type: FORM_UPDATE,
         value: value,

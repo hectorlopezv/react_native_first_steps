@@ -1,0 +1,1 @@
+export const apiEndPoint= "https://rn-complete-guide-the-shop-app-default-rtdb.firebaseio.com/";
